@@ -1,14 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid } from "@material-ui/core";
 import "./App.css";
 
 const years = {
-  Y2017: require("./desawarYears/2017.json"),
+  Y_1982: require("./desawarYears/1982.json"),
+  Y_1980: require("./desawarYears/1980.json"),
 };
 
 const DesawarGame = () => {
-  // const [currentYear, setCurrentYear] = useState(years.Y2017);
-  const currentYear = years.Y2017;
+  const months = [
+    "1982",
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC",
+  ];
+  const [currentMonths, setCurrentMonths] = useState([...months]);
+
+  const [currentYear, setCurrentYear] = useState(years.Y_1982.Sheet1);
+  // const currentYear = years.Y_2017.Sheet1;
   //   const check = (selector, text) => {
   //     var elements = document.querySelectorAll(selector);
   //     return Array.prototype.filter.call(elements, function (element) {
@@ -33,7 +51,7 @@ const DesawarGame = () => {
   };
 
   const find = (e) => {
-    let list = e.target.value.split(",");
+    let list = e.target.value.split(" ");
 
     let mulitple_values = check_multi("span", list);
 
@@ -59,13 +77,19 @@ const DesawarGame = () => {
           {Object.keys(value).map((item, key) => {
             return (
               <span key={key} className="span_box_fix">
-                {value[item]}
+                {value[currentMonths[key]]}
               </span>
             );
           })}
         </p>
       );
     });
+  };
+
+  const changeYear = (e) => {
+    setCurrentYear(years[e.target.value].Sheet1);
+    currentMonths[0] = e.target.value.split("_")[1];
+    setCurrentMonths([...currentMonths]);
   };
 
   return (
@@ -76,6 +100,21 @@ const DesawarGame = () => {
         onChange={find}
       ></input>
 
+      <select onChange={changeYear}>
+        {Object.keys(years).map((item, key) => {
+          return <option key={key}>{item}</option>;
+        })}
+      </select>
+      <h1>{currentMonths[0]}</h1>
+      <p style={{ margin: 0 }}>
+        {currentMonths.map((value, key) => {
+          return (
+            <span key={key} className="span_box_fix">
+              {value}
+            </span>
+          );
+        })}
+      </p>
       {getData()}
     </Grid>
   );
