@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid } from "@material-ui/core";
 import "./App.css";
 
 const years = {
-  Y_1982: require("./desawarYears/1982.json"),
   Y_1980: require("./desawarYears/1980.json"),
+  // Y_1981: require("./desawarYears/1980.json"),
+  Y_1982: require("./desawarYears/1982.json"),
+  Y_1990: require("./desawarYears/1990.json"),
+  // Y_1984: require("./desawarYears/1984.json"),
+  // Y_1985: require("./desawarYears/1985.json"),
+  // Y_1986: require("./desawarYears/1986.json"),
+  // Y_1987: require("./desawarYears/1987.json"),
+  // Y_1988: require("./desawarYears/1988.json"),
+  // Y_1989: require("./desawarYears/1989.json"),
 };
 
 const DesawarGame = () => {
@@ -23,9 +31,9 @@ const DesawarGame = () => {
     "NOV",
     "DEC",
   ];
-  const [currentMonths, setCurrentMonths] = useState([...months]);
+  // const [months, setmonths] = useState([...months]);
 
-  const [currentYear, setCurrentYear] = useState(years.Y_1982.Sheet1);
+  // const [currentYear, setCurrentYear] = useState(years);
   // const currentYear = years.Y_2017.Sheet1;
   //   const check = (selector, text) => {
   //     var elements = document.querySelectorAll(selector);
@@ -70,14 +78,14 @@ const DesawarGame = () => {
     }
   };
 
-  const getData = () => {
-    return currentYear.map((value, index) => {
+  const getData = (year) => {
+    return year.map((value, index) => {
       return (
         <p style={{ margin: 0 }} key={index}>
           {Object.keys(value).map((item, key) => {
             return (
               <span key={key} className="span_box_fix">
-                {value[currentMonths[key]]}
+                {value[months[key]]}
               </span>
             );
           })}
@@ -86,11 +94,36 @@ const DesawarGame = () => {
     });
   };
 
-  const changeYear = (e) => {
-    setCurrentYear(years[e.target.value].Sheet1);
-    currentMonths[0] = e.target.value.split("_")[1];
-    setCurrentMonths([...currentMonths]);
+  const latestMonth = (year) => {
+    months[0] = year;
+    return months;
   };
+
+  const yearWise = () => {
+    return Object.keys(years).map((item, key) => {
+      return (
+        <p style={{ marginTop: 40 }}>
+          <h1>{item.split("_")[1]}</h1>
+          <p style={{ margin: 0 }}>
+            {latestMonth(item.split("_")[1]).map((value, key) => {
+              return (
+                <span key={key} className="span_box_fix">
+                  {value}
+                </span>
+              );
+            })}
+          </p>
+          {getData(years[item].Sheet1)}
+        </p>
+      );
+    });
+  };
+
+  // const changeYear = (e) => {
+  //   setCurrentYear(years[e.target.value].Sheet1);
+  //   months[0] = e.target.value.split("_")[1];
+  //   setmonths([...months]);
+  // };
 
   return (
     <Grid>
@@ -100,22 +133,21 @@ const DesawarGame = () => {
         onChange={find}
       ></input>
 
-      <select onChange={changeYear}>
+      {/* <select onChange={changeYear}>
         {Object.keys(years).map((item, key) => {
           return <option key={key}>{item}</option>;
         })}
-      </select>
-      <h1>{currentMonths[0]}</h1>
-      <p style={{ margin: 0 }}>
-        {currentMonths.map((value, key) => {
+      </select> */}
+      {/* <p style={{ margin: 0 }}>
+        {months.map((value, key) => {
           return (
             <span key={key} className="span_box_fix">
               {value}
             </span>
           );
         })}
-      </p>
-      {getData()}
+      </p> */}
+      {yearWise()}
     </Grid>
   );
 };
