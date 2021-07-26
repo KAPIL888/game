@@ -46,7 +46,8 @@ const DesawarGame = () => {
     let local = multiValue.map((value) => {
       if (value) {
         return Array.prototype.filter.call(elements, function (element) {
-          return RegExp(value).test(element.textContent);
+          return value === element.textContent;
+          //return RegExp(value).test(element.textContent);
         });
       } else {
         return 0;
